@@ -1,0 +1,22 @@
+{
+  "name": "Le Spese di Sim",
+  "short_name": "Spese di Sim",
+  "description": "Spese di casa, scadenze e risparmi",
+  "lang": "it",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F4F2",
+  "theme_color": "#1C1C1C",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+    {"src": "maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Scadenze", "short_name": "Scadenze", "url": "./#scadenze", "icons": [{"src": "icon-192.png", "sizes": "192x192"}]}
+  ]
+}
