@@ -245,6 +245,21 @@ section.enter{animation:enter .35s cubic-bezier(.2,.8,.2,1)}
 .msep{display:flex;justify-content:space-between;padding:10px 14px;font-weight:900;background:var(--dark);color:var(--primary);text-transform:capitalize;font-size:.88rem}
 .msep span:last-child{color:var(--on-dark-2);font-weight:800;text-transform:none}
 .daypanel .row{cursor:pointer}
+
+/* ---------- Riquadri spostabili ---------- */
+.blocks{display:flex;flex-direction:column}
+.blk{margin-top:12px;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.blk:first-child{margin-top:0}
+.blk.auto:has(> :only-child:empty){display:none}
+.blk > div > .remind:first-child,.blk > .card.cal,.blk > div > h2:first-child,.blk > h2:first-child{margin-top:0}
+.blk > .card:last-child,.blk > div > .card:last-child{margin-bottom:0}
+.tile{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.lifted{position:fixed !important;z-index:80;margin:0 !important;pointer-events:none;box-shadow:0 22px 48px rgba(0,0,0,.28) !important;transform:scale(1.03) rotate(-.8deg);transition:transform .18s cubic-bezier(.2,1.4,.4,1);opacity:.97;border-radius:22px}
+.ph{border:2px dashed var(--primary);border-radius:22px;background:var(--primary-soft);margin-top:12px;animation:phIn .2s ease}
+.grid .ph{margin-top:0}
+@keyframes phIn{from{opacity:0;transform:scale(.96)}}
+.holding{animation:hold .45s ease forwards}
+@keyframes hold{to{transform:scale(.97)}}
 </style>
 
 </head>
@@ -296,7 +311,7 @@ section.enter{animation:enter .35s cubic-bezier(.2,.8,.2,1)}
   </defs>
 </svg>
 <div class="wrap">
-  <div class="brandrow"><div class="brand">Le Spese di Sim</div><span class="ver">v2.1</span><button class="installbtn hidden" id="installBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Installa app</button></div>
+  <div class="brandrow"><div class="brand">Le Spese di Sim</div><span class="ver">v2.2</span><button class="installbtn hidden" id="installBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Installa app</button></div>
 
   <!-- HOME: caselle delle fonti -->
   <section id="v-home">
@@ -318,7 +333,8 @@ section.enter{animation:enter .35s cubic-bezier(.2,.8,.2,1)}
       </div>
       <span class="archtag hidden">Archiviato</span>
     </header>
-    <div class="hero">
+    <div class="blocks" id="fBlocks">
+    <div class="blk" data-b="riepilogo"><div class="hero">
       <svg class="mini" viewBox="0 0 120 124" aria-hidden="true"><use href="#safe" width="120" height="124" style="--deco-cut:var(--dark)"/></svg>
       <div class="lbl" id="fLbl">Netto dell'anno</div>
       <div class="big num" id="fNet">0,00 €</div>
@@ -327,18 +343,21 @@ section.enter{animation:enter .35s cubic-bezier(.2,.8,.2,1)}
         <div><span class="dot" style="background:var(--in)"></span>Incassi<b class="num" id="fIn">0</b></div>
         <div><span class="dot" style="background:#9A9EA4"></span>Spese<b class="num" id="fOut">0</b></div>
       </div>
+    </div></div>
+    <div class="blk auto" data-b="dapagare"><div id="fDue"></div></div>
+    <div class="blk auto" data-b="anticipi"><div id="fAnt"></div></div>
+    <div class="blk" data-b="calendario"><div class="card cal" id="cal"></div></div>
+    <div class="blk" data-b="storico">
+      <div id="archBar"></div>
+      <div class="btnrow" id="fixedRow" style="margin-top:0"></div>
+      <div class="btnrow" id="filterRow" style="margin-top:0">
+        <button class="chip on" data-f="tutti">Tutti</button>
+        <button class="chip" data-f="uscita">Spese</button>
+        <button class="chip" data-f="entrata">Incassi</button>
+      </div>
+      <div class="list" id="movList" style="margin-top:10px"></div>
     </div>
-    <div id="fDue"></div>
-    <div id="fAnt"></div>
-    <div class="btnrow" id="fixedRow"></div>
-    <div class="card cal" id="cal"></div>
-    <div id="archBar"></div>
-    <div class="btnrow" id="filterRow">
-      <button class="chip on" data-f="tutti">Tutti</button>
-      <button class="chip" data-f="uscita">Spese</button>
-      <button class="chip" data-f="entrata">Incassi</button>
     </div>
-    <div class="list" id="movList" style="margin-top:10px"></div>
   </section>
 
   <!-- SCADENZE -->
@@ -368,7 +387,8 @@ section.enter{animation:enter .35s cubic-bezier(.2,.8,.2,1)}
       <span class="archtag hidden">Archiviato</span>
     </header>
     <div class="casebar" id="fonteBar"></div>
-    <div class="card">
+    <div class="blocks" id="tBlocks">
+    <div class="blk" data-b="totali"><div class="card">
       <div class="btnrow" id="totPeriod" style="margin-top:0">
         <button class="chip on" data-p="anno">Anno selezionato</button>
         <button class="chip" data-p="sempre">Da sempre</button>
@@ -378,14 +398,15 @@ section.enter{animation:enter .35s cubic-bezier(.2,.8,.2,1)}
         <button class="chip" data-g="cat">Per categoria</button>
       </div>
       <div class="tot" id="totList"></div>
+    </div></div>
+    <div class="blk" data-b="categorie"><h2>Spese per categoria dell'anno</h2>
+    <div class="card"><div class="chartbox"><canvas id="cCat"></canvas></div><div id="catEmpty" class="muted hidden" style="text-align:center;padding:20px 0">Nessuna spesa in quest'anno.</div></div></div>
+    <div class="blk" data-b="perfonte"><div id="fonteChartWrap"><h2>Spese per fonte, mese per mese</h2><div class="card"><div class="chartbox tall"><canvas id="cFonte"></canvas></div></div></div></div>
+    <div class="blk" data-b="incassispese"><h2>Incassi e spese, mese per mese</h2>
+    <div class="card"><div class="chartbox tall"><canvas id="cYear"></canvas></div></div></div>
+    <div class="blk" data-b="netto"><h2>Netto mese per mese</h2>
+    <div class="card"><div class="chartbox"><canvas id="cNet"></canvas></div></div></div>
     </div>
-    <h2>Spese per categoria dell'anno</h2>
-    <div class="card"><div class="chartbox"><canvas id="cCat"></canvas></div><div id="catEmpty" class="muted hidden" style="text-align:center;padding:20px 0">Nessuna spesa in quest'anno.</div></div>
-    <div id="fonteChartWrap"><h2>Spese per fonte, mese per mese</h2><div class="card"><div class="chartbox tall"><canvas id="cFonte"></canvas></div></div></div>
-    <h2>Incassi e spese, mese per mese</h2>
-    <div class="card"><div class="chartbox tall"><canvas id="cYear"></canvas></div></div>
-    <h2>Netto mese per mese</h2>
-    <div class="card"><div class="chartbox"><canvas id="cNet"></canvas></div></div>
   </section>
 
   <!-- IMPOSTAZIONI -->
@@ -404,6 +425,8 @@ section.enter{animation:enter .35s cubic-bezier(.2,.8,.2,1)}
     <div class="card" id="catInSet"></div>
     <div id="installCard" class="hidden"><h2>Installazione</h2>
       <div class="card"><p class="muted" style="margin-top:0">Installa l'app sul telefono: si apre dalla sua icona e funziona anche senza connessione.</p><button class="btn" id="installBtn2">Installa app</button></div></div>
+    <h2>Disposizione</h2>
+    <div class="card"><p class="muted" style="margin-top:0">Tieni premuto un riquadro (riepilogo, calendario, storico, grafici o una casella delle fonti) finché non si solleva, poi trascinalo dove preferisci.</p><button class="btn ghost small" id="resetLayout">Ripristina disposizione originale</button></div>
     <h2>Backup</h2>
     <div class="card">
       <p class="muted" style="margin-top:0">I dati sono salvati su questo telefono. Esporta un backup ogni tanto, o in CSV per aprirli con Excel.</p>
@@ -562,7 +585,7 @@ function renderHome(){
   $("#addTile").onclick=()=>openFonteForm(null);
 }
 
-function openFonte(id){ S.fonte=id; S.filter="tutti"; S.day=null; S.unlock=false; S.calM = S.year===TY()?new Date().getMonth():11; $$("#filterRow .chip").forEach(x=>x.classList.toggle("on",x.dataset.f==="tutti")); history.pushState({v:"fonte"},""); goView("fonte"); }
+function openFonte(id){ sortHint(); S.fonte=id; S.filter="tutti"; S.day=null; S.unlock=false; S.calM = S.year===TY()?new Date().getMonth():11; $$("#filterRow .chip").forEach(x=>x.classList.toggle("on",x.dataset.f==="tutti")); history.pushState({v:"fonte"},""); goView("fonte"); }
 function renderFonte(){
   const f=S.fonte, y=S.year, t=totalsYear(y,f), arch=isArchived(y);
   $("#fTitle").innerHTML=`<svg width="22" height="22" style="vertical-align:-3px;margin-right:6px;color:var(--ink-2)"><use href="#${fonteIcon(f)}"/></svg>${esc(fonteName(f))}`;
@@ -1048,11 +1071,93 @@ $$("nav.tabs button").forEach(b=>b.onclick=()=>{ if(S.view==="fonte"&&history.st
 window.addEventListener("hashchange",()=>{ if(location.hash==="#scadenze") goView("scadenze"); });
 document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"){ render(); checkReminders(); } });
 
+/* ---------- Riquadri spostabili (tieni premuto e trascina) ---------- */
+function applyOrder(container, key){
+  const ord=(S.settings.layout||{})[key]; if(!ord||!container) return;
+  ord.forEach(id=>{ const b=container.querySelector(`:scope > [data-b="${id}"]`); if(b) container.appendChild(b); });
+}
+function makeSortable(container, itemSel, getId, onDrop, isGrid){
+  let timer=null, start=null, item=null, ph=null, dragging=false, offX=0, offY=0, suppress=false, lastP=null, raf=null;
+  const pt=e=>e.touches?e.touches[0]:e;
+  function down(e){
+    if (dragging) return;
+    const it=e.target.closest(itemSel); if(!it||it.parentElement!==container) return;
+    if (e.type==="mousedown"&&e.button!==0) return;
+    const p=pt(e); start={x:p.clientX,y:p.clientY}; item=it; lastP=p;
+    it.classList.add("holding");
+    timer=setTimeout(()=>lift(), 450);
+  }
+  function lift(){
+    if(!item) return;
+    dragging=true; item.classList.remove("holding");
+    const r=item.getBoundingClientRect();
+    offX=lastP.clientX-r.left; offY=lastP.clientY-r.top;
+    ph=document.createElement("div"); ph.className="ph"; ph.style.height=r.height+"px";
+    item.parentNode.insertBefore(ph,item);
+    Object.assign(item.style,{width:r.width+"px",height:r.height+"px",left:r.left+"px",top:r.top+"px"});
+    item.classList.add("lifted"); document.body.appendChild(item);
+    try{ navigator.vibrate&&navigator.vibrate(25); }catch(e){}
+    raf=requestAnimationFrame(autoScroll);
+  }
+  function autoScroll(){
+    if(!dragging) return;
+    const y=lastP.clientY, top=90, bot=window.innerHeight-150;
+    if (y<top) window.scrollBy(0,-Math.ceil((top-y)/6)); else if (y>bot) window.scrollBy(0,Math.ceil((y-bot)/6));
+    place(); raf=requestAnimationFrame(autoScroll);
+  }
+  function place(){
+    const p=lastP, sibs=[...container.children].filter(x=>x.matches(itemSel) && x.offsetHeight>0);
+    let best=null, bd=1e9;
+    sibs.forEach(s=>{ const r=s.getBoundingClientRect(), d=Math.hypot(p.clientX-(r.left+r.width/2), p.clientY-(r.top+r.height/2)); if(d<bd){bd=d;best=s;} });
+    if(!best) return;
+    const r=best.getBoundingClientRect();
+    let after;
+    if (isGrid && Math.abs(p.clientY-(r.top+r.height/2))<r.height/2) after=p.clientX>r.left+r.width/2;
+    else after=p.clientY>r.top+r.height/2;
+    const ref=after?best.nextSibling:best;
+    if (ref!==ph) container.insertBefore(ph, ref);
+  }
+  function move(e){
+    if(!item) return; const p=pt(e);
+    if(!dragging){ if(Math.hypot(p.clientX-start.x,p.clientY-start.y)>8){ clearTimeout(timer); item.classList.remove("holding"); item=null; } return; }
+    if (e.cancelable) e.preventDefault();
+    lastP=p; item.style.left=(p.clientX-offX)+"px"; item.style.top=(p.clientY-offY)+"px";
+  }
+  function up(){
+    clearTimeout(timer);
+    if (item) item.classList.remove("holding");
+    if (dragging){
+      cancelAnimationFrame(raf); dragging=false;
+      ph.replaceWith(item); item.classList.remove("lifted"); ["width","height","left","top"].forEach(k=>item.style[k]="");
+      suppress=true; setTimeout(()=>suppress=false,400);
+      onDrop([...container.children].filter(x=>x.matches(itemSel)).map(getId));
+    }
+    item=null; ph=null;
+  }
+  container.addEventListener("touchstart",down,{passive:true});
+  document.addEventListener("touchmove",move,{passive:false});
+  document.addEventListener("touchend",up); document.addEventListener("touchcancel",up);
+  container.addEventListener("mousedown",down); document.addEventListener("mousemove",move); document.addEventListener("mouseup",up);
+  container.addEventListener("click",e=>{ if(suppress){ e.stopPropagation(); e.preventDefault(); } },true);
+  container.addEventListener("contextmenu",e=>{ if(item||dragging) e.preventDefault(); });
+}
+function saveLayout(key, ids){ (S.settings.layout ||= {})[key]=ids; saveSettings(); toast("Disposizione salvata"); }
+function sortHint(){ try{ if(localStorage.getItem(P+"hintSort")) return; localStorage.setItem(P+"hintSort","1"); }catch(e){ return; } setTimeout(()=>toast("Tieni premuto un riquadro per spostarlo"),1200); }
+makeSortable($("#fBlocks"), ".blk", b=>b.dataset.b, ids=>saveLayout("fonte",ids));
+makeSortable($("#tBlocks"), ".blk", b=>b.dataset.b, ids=>{ saveLayout("totali",ids); renderTotali(); });
+makeSortable($("#tiles"), ".tile[data-f]:not(.gen)", t=>t.dataset.f, ids=>{
+  const map=Object.fromEntries(S.settings.fonti.map(f=>[f.id,f])); S.settings.fonti=ids.map(id=>map[id]).filter(Boolean); saveSettings(); toast("Ordine delle fonti salvato"); renderHome(); }, true);
+$("#resetLayout").onclick=()=>{ delete S.settings.layout; saveSettings();
+  ["riepilogo","dapagare","anticipi","calendario","storico"].forEach(id=>$("#fBlocks").appendChild($(`#fBlocks > [data-b="${id}"]`)));
+  ["totali","categorie","perfonte","incassispese","netto"].forEach(id=>$("#tBlocks").appendChild($(`#tBlocks > [data-b="${id}"]`)));
+  toast("Disposizione ripristinata"); };
+
 /* ---------- Avvio ---------- */
 const data=Store.load();
 if (data.settings) S.settings=data.settings;
 S.months=data.months||{};
 migrate(); Store.save("settings",S.settings);
+applyOrder($("#fBlocks"),"fonte"); applyOrder($("#tBlocks"),"totali");
 (function archiveCheck(){
   const st=S.settings; st.archiviati ||= [];
   const past=[...new Set(Object.keys(S.months).map(k=>+k.slice(0,4)))].filter(y=>y<TY() && !st.archiviati.includes(y)).sort();
